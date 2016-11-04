@@ -7,10 +7,21 @@ var twitterKeys = {
 };
 var client = new Twitter(twitterKeys);
 
-client.stream('statuses/filter', {track: 'javascript'}, function(stream) {
-  stream.on('data', function(event) {
-    console.log(event && event.text);
-  });
+var fs = require('fs');
+
+client.stream('statuses/filter', JSON.parse(fs.readFileSync('./streamValues.json')), function(stream) {
+	stream.on('data', function(tweet) {
+		var tweet_id = tweet.id_str;
+		var retweet = tweet.retweeted_status || null;
+		if(retweet === null)
+		{
+			client.post('statuses/retweet/' + tweet_id, function(error, tweet, response) {
+				if (!error) {
+					console.log(tweet.text);
+				}
+			});
+		}
+	});
  
   stream.on('error', function(error) {
     console.log(error);
