@@ -1,1 +1,3 @@
-node index.js
+#!/bin/bash
+
+TWITTER_CONSUMER_KEY=mykey TWITTER_CONSUMER_SECRET=mysecret TWITTER_ACCESS_TOKEN_KEY=mytokenkey TWITTER_ACCESS_TOKEN_SECRET=mytokensecret node index.js
